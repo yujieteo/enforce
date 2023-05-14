@@ -1,0 +1,109 @@
+
+# Exclude sensitive information and credentials
+*.env
+*.pem
+*.key
+*.cer
+
+# Exclude configuration files
+config/
+settings/
+*.config
+
+# Exclude log files
+logs/
+*.log
+
+# Exclude temporary files and cache
+tmp/
+cache/
+*.tmp
+
+# Exclude build output
+bin/
+build/
+dist/
+*.exe
+*.dll
+*.o
+
+# Exclude dependency files
+node_modules/
+vendor/
+venv/
+
+# Exclude operating system files
+.DS_Store
+Thumbs.db
+.idea/
+
+# Exclude personal user files
+.bash_history
+.vimrc
+*.bak
+
+
+# Exclude ANSYS result files
+*.rst
+*.db
+*.dbb
+*.err
+*.esav
+*.full
+*.h3d
+*.info
+*.ldhi
+*.ldpost
+*.lff
+*.load
+*.mac
+*.nas
+*.odb
+*.out
+*.plo
+*.plot
+*.plt
+*.pmacr
+*.prm
+*.prt
+*.prtinfo
+*.puz
+*.read
+*.readrst
+*.results
+*.resu
+*.rfl
+*.rstt
+*.rth
+*.rzh
+*.ses
+*.stat
+*.stt
+*.sum
+*.tbin
+*.tmc
+*.trd
+*.wdb
+*.wrl
+*.xy
+
+# Exclude LaTeX junk files
+*.aux
+*.bbl
+*.bcf
+*.nav
+*.blg
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.run.xml
+*.snm
+*.synctex.gz
+
+# Exclude documentation and notes
+docs/
+
+# Exclude any other sensitive files or directories
+

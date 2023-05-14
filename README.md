@@ -16,5 +16,5 @@ on an existing folder that is similar to the one here.
 
 ## Getting Started
 
-Run the executable provided for 64 bit Windows. Or create builds
+Run the executable provided for 64-bit Windows. Or create builds
 for other operating systems using ```go build````
