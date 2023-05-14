@@ -1127,20 +1127,37 @@ func createReportTex(projectPath string) error {
 
     \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
     \lstset{framextopmargin=50pt,frame=bottomline}
+    \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+    \lstset{framextopmargin=50pt,frame=bottomline}
 
-    \definecolor{codegreen}{rgb}{0,0.6,0}
-    \definecolor{codegray}{rgb}{0.5,0.5,0.5}
-    \definecolor{codepurple}{rgb}{0.58,0,0.82}
-    \definecolor{backcolour}{rgb}{0.97,0.97,0.95}
+    
+    \definecolor{solarized-base03}{HTML}{002B36}
+    \definecolor{solarized-base02}{HTML}{073642}
+    \definecolor{solarized-base01}{HTML}{586e75}
+    \definecolor{solarized-base00}{HTML}{657b83}
+    \definecolor{solarized-base0}{HTML}{839496}
+    \definecolor{solarized-base1}{HTML}{93a1a1}
+    \definecolor{solarized-base2}{HTML}{eee8d5}
+    \definecolor{solarized-base3}{HTML}{fdf6e3}
+    \definecolor{solarized-yellow}{HTML}{b58900}
+    \definecolor{solarized-orange}{HTML}{cb4b16}
+    \definecolor{solarized-red}{HTML}{dc322f}
+    \definecolor{solarized-magenta}{HTML}{d33682}
+    \definecolor{solarized-violet}{HTML}{6c71c4}
+    \definecolor{solarized-blue}{HTML}{268bd2}
+    \definecolor{solarized-cyan}{HTML}{2aa198}
+    \definecolor{solarized-green}{HTML}{859900}
+    
+    \definecolor{backcolour}{HTML}{FFFFFF}
 
-    \lstdefinestyle{mystyle}{
-        backgroundcolor=\color{backcolour},   
-        commentstyle=\color{codegreen},
-        keywordstyle=\color{blue},
-        numberstyle=\tiny\color{codegray},
-        stringstyle=\color{codepurple},
-        basicstyle=\ttfamily\footnotesize,
-        breakatwhitespace=false,         
+    \lstset{
+        backgroundcolor=\color{backcolour},  
+        basicstyle=\color{solarized-base00}\ttfamily,
+        keywordstyle=\color{solarized-blue},
+        stringstyle=\color{solarized-cyan},
+        commentstyle=\color{solarized-green},
+        numberstyle=\color{solarized-orange},
+        identifierstyle=\color{solarized-violet},
         breaklines=true,                 
         captionpos=b,                    
         keepspaces=true,                 
@@ -1148,10 +1165,9 @@ func createReportTex(projectPath string) error {
         numbersep=5pt,                  
         showspaces=false,                
         showstringspaces=false,
-        showtabs=false,                  
-        tabsize=4
+        showtabs=true,                  
+        tabsize=8,
     }
-
     \usepackage{newtxtext}
     \usepackage{newtxmath}
     \usepackage{courier}
@@ -1180,19 +1196,34 @@ func createReportTex(projectPath string) error {
     \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
     \lstset{framextopmargin=50pt,frame=bottomline}
 
-    \definecolor{codegreen}{rgb}{0,0.6,0}
-    \definecolor{codegray}{rgb}{0.5,0.5,0.5}
-    \definecolor{codepurple}{rgb}{0.58,0,0.82}
-    \definecolor{backcolour}{rgb}{0.97,0.97,0.95}
+    
+    \definecolor{solarized-base03}{HTML}{002B36}
+    \definecolor{solarized-base02}{HTML}{073642}
+    \definecolor{solarized-base01}{HTML}{586e75}
+    \definecolor{solarized-base00}{HTML}{657b83}
+    \definecolor{solarized-base0}{HTML}{839496}
+    \definecolor{solarized-base1}{HTML}{93a1a1}
+    \definecolor{solarized-base2}{HTML}{eee8d5}
+    \definecolor{solarized-base3}{HTML}{fdf6e3}
+    \definecolor{solarized-yellow}{HTML}{b58900}
+    \definecolor{solarized-orange}{HTML}{cb4b16}
+    \definecolor{solarized-red}{HTML}{dc322f}
+    \definecolor{solarized-magenta}{HTML}{d33682}
+    \definecolor{solarized-violet}{HTML}{6c71c4}
+    \definecolor{solarized-blue}{HTML}{268bd2}
+    \definecolor{solarized-cyan}{HTML}{2aa198}
+    \definecolor{solarized-green}{HTML}{859900}
+    
+    \definecolor{backcolour}{HTML}{FFFFFF}
 
-    \lstdefinestyle{mystyle}{
-        backgroundcolor=\color{backcolour},   
-        commentstyle=\color{codegreen},
-        keywordstyle=\color{blue},
-        numberstyle=\tiny\color{codegray},
-        stringstyle=\color{codepurple},
-        basicstyle=\ttfamily\footnotesize,
-        breakatwhitespace=false,         
+    \lstset{
+        backgroundcolor=\color{backcolour},  
+        basicstyle=\color{solarized-base00}\ttfamily,
+        keywordstyle=\color{solarized-blue},
+        stringstyle=\color{solarized-cyan},
+        commentstyle=\color{solarized-green},
+        numberstyle=\color{solarized-orange},
+        identifierstyle=\color{solarized-violet},
         breaklines=true,                 
         captionpos=b,                    
         keepspaces=true,                 
@@ -1200,8 +1231,8 @@ func createReportTex(projectPath string) error {
         numbersep=5pt,                  
         showspaces=false,                
         showstringspaces=false,
-        showtabs=false,                  
-        tabsize=4
+        showtabs=true,                  
+        tabsize=8,
     }
 
     % \addbibresource{ref.bib}
@@ -1228,11 +1259,7 @@ func createReportTex(projectPath string) error {
 
 \frame{\titlepage}
 
-\begin{frame}
-    \setcounter{footnote}{0}
-    \frametitle{Contents}
-    \tableofcontents
-\end{frame}
+\tableofcontents
 
 
 \begin{frame}[plain]
@@ -1240,6 +1267,55 @@ func createReportTex(projectPath string) error {
     \setcounter{footnote}{0}
     \setcounter{equation}{0}
 \end{frame}
+
+\subsection{Background}
+
+((blank)) (ADVICE: PROVIDE A BRIEF OVERVIEW OF THE RELEVANT 
+LITERATURE). In retrospect, one can consider ((blank)) as a future 
+direction (ADVICE: HIGHLIGHT AN AREA THAT NEEDS FURTHER 
+INVESTIGATION OR EXPLORATION). Understanding the background of the 
+study is crucial to grasp the context and motivation behind the 
+current research. Previous studies have shown ((blank)) (ADVICE: 
+SUMMARIZE KEY FINDINGS OR DISCOVERIES IN THE FIELD). However, there 
+remains a gap in knowledge regarding ((blank)) (ADVICE: IDENTIFY A 
+SPECIFIC GAP OR LIMITATION IN THE EXISTING RESEARCH). Therefore, 
+this study aims to ((blank)) (ADVICE: STATE THE RESEARCH OBJECTIVES 
+OR PURPOSE). By addressing this gap, the findings of this research 
+can contribute to ((blank)) (ADVICE: DESCRIBE THE POTENTIAL IMPACT 
+OR BENEFITS OF THE STUDY) and advance our understanding in the field.
+
+\subsection{Problem Statement}
+
+((blank)) (ADVICE: CLEARLY STATE THE PROBLEM). By identifying and 
+addressing ((blank)) (ADVICE: SPECIFY THE PROBLEM), this study aims 
+to contribute to the understanding and potential solutions for 
+((blank)) (ADVICE: DESCRIBE THE IMPACT AND RELEVANCE OF THE 
+PROBLEM). Furthermore, this research aims to bridge the existing gap 
+in knowledge by ((blank)) (ADVICE: EXPLAIN HOW YOUR RESEARCH 
+ADDRESSES THE GAP). Consequently, this investigation will provide 
+valuable insights into ((blank)) (ADVICE: STATE THE BENEFITS OF 
+SOLVING THE PROBLEM) and offer practical implications for ((blank)) 
+(ADVICE: IDENTIFY THE RELEVANT STAKEHOLDERS). In retrospect, one can 
+consider ((blank)) (ADVICE: HIGHLIGHT THE URGENCY OR TIMELINESS OF 
+SOLVING THE PROBLEM) as a future direction. By addressing the issues 
+highlighted in this study, we can pave the way for ((blank)) 
+(ADVICE: DISCUSS THE POTENTIAL POSITIVE OUTCOMES).
+
+To set the objectives of this study, ((blank)) (ADVICE: CLEARLY 
+DEFINE THE RESEARCH SCOPE OR CONTEXT). The primary objective of this 
+research is to ((blank)) (ADVICE: SPECIFY THE MAIN GOAL OR PURPOSE 
+OF THE STUDY). By accomplishing this objective, we aim to ((blank)) 
+(ADVICE: DESCRIBE THE INTENDED CONTRIBUTION OR OUTCOME). 
+Additionally, the secondary objectives of this investigation are 
+((blank)) (ADVICE: IDENTIFY THE SUBOBJECTIVES OR SPECIFIC ASPECTS TO 
+BE ADDRESSED). These objectives will be pursued through ((blank)) 
+(ADVICE: DISCUSS THE METHODOLOGY OR APPROACH). By achieving these 
+objectives, we can provide ((blank)) (ADVICE: HIGHLIGHT THE VALUE OR 
+BENEFITS OF ACHIEVING THE OBJECTIVES). Reflecting on the future, one 
+can consider ((blank)) (ADVICE: SUGGEST POTENTIAL FUTURE DIRECTIONS 
+TO BUILD UPON THE OBJECTIVES). Pursuing these future directions will 
+enable us to ((blank)) (ADVICE: STATE THE POTENTIAL ENHANCEMENT OR 
+EXPANSION OF THE RESEARCH).
 
 \begin{frame}
   \frametitle{Introduction}
@@ -1252,20 +1328,169 @@ func createReportTex(projectPath string) error {
   \end{itemize}
 \end{frame}
 
+\section{Literature}
+
+\subsection{General survey}
+
+A general survey of the literature reveals ((blank)) (ADVICE: 
+IDENTIFY THE COMMON THEMES OR FINDINGS). Numerous studies have 
+investigated ((blank)) (ADVICE: SPECIFY THE MAIN TOPICS OR RESEARCH 
+AREAS). These studies have provided valuable insights into ((blank)) 
+(ADVICE: HIGHLIGHT THE KNOWLEDGE AND UNDERSTANDING GAINED). 
+Furthermore, it is evident that ((blank)) (ADVICE: DESCRIBE THE 
+CURRENT STATE OR TRENDS IN THE FIELD). However, ((blank)) (ADVICE: 
+POINT OUT THE GAPS OR LIMITATIONS IN THE EXISTING LITERATURE). 
+Consequently, this research seeks to address these gaps and extend 
+the current body of knowledge by ((blank)) (ADVICE: EXPLAIN THE 
+NOVEL ASPECTS OR CONTRIBUTIONS OF YOUR STUDY). By doing so, we aim 
+to provide a deeper understanding of ((blank)) (ADVICE: SPECIFY THE 
+ASPECTS OR PHENOMENA UNDER INVESTIGATION). Moving forward, it is 
+essential to ((blank)) (ADVICE: DISCUSS THE NEED FOR FUTURE RESEARCH 
+OR DIRECTIONS). By considering these gaps and potential research 
+areas, we can further advance our knowledge of ((blank)) (ADVICE: 
+STATE THE RELEVANT TOPIC OR FIELD) and contribute to ((blank)) 
+(ADVICE: HIGHLIGHT THE POTENTIAL BENEFITS OR IMPACT OF THE RESEARCH).
+
+\subsection{Concepts and definitions}
+
+In order to establish a strong foundation for this research, it is 
+crucial to clarify the key concepts and provide precise definitions. 
+((blank)) (ADVICE: INTRODUCE THE MAIN CONCEPTS OR TERMS). The 
+concept of ((blank)) is central to this study and refers to 
+((blank)) (ADVICE: PROVIDE A CLEAR AND CONCISE DEFINITION). 
+Additionally, the notion of ((blank)) is relevant in understanding 
+((blank)) (ADVICE: DEFINE ANOTHER KEY CONCEPT AND ITS RELATION TO 
+THE RESEARCH). Furthermore, it is essential to define ((blank)) 
+(ADVICE: IDENTIFY ANOTHER CONCEPT OR TERM) as it plays a significant 
+role in this investigation. It is important to note that these 
+definitions are not only limited to their traditional meanings, but 
+also encompass ((blank)) (ADVICE: HIGHLIGHT ANY EXTENSIONS OR 
+MODIFICATIONS OF THE CONCEPTS IN YOUR RESEARCH CONTEXT). By 
+establishing clear definitions and conceptual frameworks, we can 
+ensure a common understanding of the terminology used throughout 
+this study. Additionally, these conceptual definitions will provide 
+a basis for ((blank)) (ADVICE: HINT AT HOW THE CONCEPTS WILL BE 
+APPLIED OR ANALYZED IN THE RESEARCH).
+
 \begin{frame}
   \frametitle{Literature Review}
   \setcounter{footnote}{0}
   \setcounter{equation}{0}
   \begin{itemize}
-    \item Overview of Relevant Literature: Summarizes the key literature and theories related to the research topic.
-    \item Key Concepts and Definitions: Defines important terms and concepts used in the research.
-    \item Previous Research Findings: Highlights the main findings of previous studies related to the research question.
-    \item Gaps in Existing Knowledge: Identifies areas where further research is needed or where the current knowledge is limited.
+    \item Overview of Relevant Literature: Summarizes the key 
+    literature and theories related to the research topic.
+    \item Concepts and definitions: Defines important terms and 
+    concepts used in the research.
+    \item Previous Research Findings: Highlights the main findings 
+    of previous studies related to the research question.
+    \item Current Knowledge Gap: Identifies areas where further 
+    research is needed or where the current knowledge is limited.
   \end{itemize}
 \end{frame}
 
+\section{Methods}
+
+\subsection{Research design}
+
+The research design of this study is crucial for achieving the 
+objectives and addressing the research questions. ((blank)) (ADVICE: 
+CLEARLY STATE THE RESEARCH APPROACH OR STRATEGY). In this 
+investigation, a ((blank)) (ADVICE: SPECIFY THE SPECIFIC RESEARCH 
+DESIGN, e.g., experimental, qualitative, quantitative) approach will 
+be employed to gather and analyze data. This design will enable us 
+to ((blank)) (ADVICE: DESCRIBE HOW THE RESEARCH DESIGN WILL HELP IN 
+ACHIEVING THE OBJECTIVES OR ADDRESSING THE RESEARCH QUESTIONS). To 
+ensure the validity and reliability of the findings, ((blank)) 
+(ADVICE: DISCUSS THE METHODOLOGICAL TECHNIQUES OR TOOLS THAT WILL BE 
+UTILIZED). The data collection process will involve ((blank)) 
+(ADVICE: EXPLAIN THE DATA COLLECTION METHODS OR SOURCES). 
+Additionally, ((blank)) (ADVICE: MENTION ANY CONTROLS, VARIABLES, OR 
+SAMPLING TECHNIQUES THAT ARE RELEVANT TO YOUR RESEARCH). The data 
+will be analyzed through ((blank)) (ADVICE: IDENTIFY THE DATA 
+ANALYSIS METHODS OR STATISTICAL TECHNIQUES TO BE APPLIED). By 
+employing this research design, we aim to ((blank)) (ADVICE: STATE 
+THE EXPECTED OUTCOMES OR CONTRIBUTION OF THE RESEARCH DESIGN). 
+Looking ahead, the next step is to ((blank)) (ADVICE: INDICATE THE 
+FUTURE STEPS IN THE RESEARCH PROCESS, SUCH AS PILOT TESTING OR 
+IMPLEMENTATION OF THE RESEARCH DESIGN).
+
+\subsection{Data collection and analysis}
+
+The data collection process is a critical component of this study, 
+ensuring the acquisition of reliable and relevant information. 
+((blank)) (ADVICE: CLEARLY STATE THE PURPOSE OF DATA COLLECTION). In 
+this research, data will be collected to ((blank)) (ADVICE: DESCRIBE 
+THE SPECIFIC OBJECTIVES OF DATA COLLECTION). To obtain a 
+comprehensive understanding of the phenomenon under investigation, a 
+((blank)) (ADVICE: SPECIFY THE DATA COLLECTION METHOD, e.g., 
+surveys, interviews, observations) approach will be employed. This 
+method will enable us to ((blank)) (ADVICE: EXPLAIN HOW THE SELECTED 
+METHOD WILL CAPTURE THE REQUIRED DATA). The sample population for 
+data collection will consist of ((blank)) (ADVICE: INDICATE THE 
+CHARACTERISTICS OR CRITERIA FOR SELECTING THE SAMPLE). The data 
+collection instruments, such as ((blank)) (ADVICE: MENTION SPECIFIC 
+TOOLS OR QUESTIONNAIRES), will be carefully designed to ensure 
+clarity and comprehensiveness. Additionally, a pilot test will be 
+conducted to ((blank)) (ADVICE: HIGHLIGHT THE IMPORTANCE OF THE 
+PILOT TEST IN VALIDATING THE INSTRUMENTS OR METHODS). Furthermore, 
+((blank)) (ADVICE: DISCUSS ANY ETHICAL CONSIDERATIONS OR APPROVALS 
+REQUIRED FOR DATA COLLECTION). By adhering to rigorous data 
+collection procedures, we aim to gather accurate and valid data that 
+will serve as a foundation for robust analysis and meaningful 
+findings.
+
+The data analysis phase of this research is instrumental in deriving 
+meaningful insights and drawing valid conclusions. ((blank)) 
+(ADVICE: CLEARLY STATE THE PURPOSE OF DATA ANALYSIS). In this study, 
+data will be analyzed to ((blank)) (ADVICE: SPECIFY THE OBJECTIVES 
+OR RESEARCH QUESTIONS TO BE ADDRESSED THROUGH DATA ANALYSIS). The 
+collected data will undergo a systematic process of ((blank)) 
+(ADVICE: DESCRIBE THE DATA ANALYSIS METHOD OR APPROACH, e.g., 
+qualitative content analysis, statistical analysis). This analysis 
+will involve ((blank)) (ADVICE: MENTION THE SPECIFIC TECHNIQUES, 
+TOOLS, OR SOFTWARE UTILIZED). The data will be examined for 
+patterns, trends, and relationships, enabling us to ((blank)) 
+(ADVICE: EXPLAIN HOW THE DATA ANALYSIS WILL UNCOVER INSIGHTS OR 
+ANSWER THE RESEARCH QUESTIONS). Additionally, ((blank)) (ADVICE: 
+DISCUSS ANY DATA TRANSFORMATION OR PREPROCESSING STEPS THAT WILL BE 
+APPLIED). The findings obtained from the data analysis will be 
+meticulously interpreted and synthesized to ((blank)) (ADVICE: 
+INDICATE HOW THE FINDINGS WILL BE ORGANIZED AND PRESENTED). It is 
+crucial to note that this research employs a ((blank)) (ADVICE: 
+HIGHLIGHT THE INNOVATIVE ASPECTS OR NOVEL APPROACH IN DATA 
+ANALYSIS). The outcomes of this data analysis will provide a 
+comprehensive understanding of ((blank)) (ADVICE: SPECIFY THE 
+PHENOMENON OR CONTEXT UNDER STUDY) and contribute to ((blank)) 
+(ADVICE: STATE THE RELEVANT FIELD OR KNOWLEDGE DOMAIN) in a 
+significant and impactful manner.
+
+\subsection{Variables and measures}
+
+In this section, we discuss the variables and measures employed in 
+this research, as they are fundamental to understanding the 
+phenomena under investigation. ((blank)) (ADVICE: INTRODUCE THE MAIN 
+VARIABLES OF INTEREST). The primary variable in this study is 
+((blank)) (ADVICE: DEFINE THE MAIN VARIABLE CLEARLY). It will be 
+measured using ((blank)) (ADVICE: SPECIFY THE MEASUREMENT METHOD OR 
+SCALE). Additionally, ((blank)) (ADVICE: IDENTIFY OTHER RELEVANT 
+VARIABLES THAT WILL BE CONSIDERED). These variables, such as 
+((blank)) (ADVICE: MENTION THE ADDITIONAL VARIABLES), will be 
+measured through ((blank)) (ADVICE: DESCRIBE THE MEASUREMENT METHODS 
+OR INDICATORS). It is important to note that the selection of 
+appropriate measures is crucial for ensuring ((blank)) (ADVICE: 
+DISCUSS THE VALIDITY AND RELIABILITY OF THE MEASURES). Furthermore, 
+((blank)) (ADVICE: ADDRESS ANY CONTROL VARIABLES OR CONFOUNDING 
+FACTORS THAT WILL BE ACCOUNTED FOR). By considering these variables 
+and measures, we aim to capture a comprehensive picture of ((blank)) 
+(ADVICE: STATE THE PHENOMENON OR RELATIONSHIPS UNDER STUDY). It is 
+worth noting that the novel aspect of our research lies in ((blank)) 
+(ADVICE: HIGHLIGHT THE INNOVATIVE OR UNIQUE ASPECTS OF THE VARIABLES 
+OR MEASURES USED). These variables and measures will provide 
+valuable insights and contribute to the advancement of knowledge in 
+the field of ((blank)) (ADVICE: SPECIFY THE RELEVANT FIELD).
+
 \begin{frame}
-  \frametitle{Methodology}
+  \frametitle{Methods}
   \setcounter{footnote}{0}
   \setcounter{equation}{0}
   \begin{itemize}
@@ -1275,6 +1500,74 @@ func createReportTex(projectPath string) error {
     \item Variables and Measures: Specifies the variables studied and the measures used to assess them.
   \end{itemize}
 \end{frame}
+
+
+\section{Results}
+
+\subsection{Presentation of findings}
+
+The presentation of findings is a crucial component of this research, as it provides a comprehensive overview of the results obtained. ((blank)) (ADVICE: INTRODUCE THE FINDINGS SECTION AND SET THE CONTEXT). In this section, we present the key findings derived from the data analysis process. The findings will be organized and presented in a logical and coherent manner, focusing on ((blank)) (ADVICE: IDENTIFY THE MAIN THEMES, TRENDS, OR PATTERNS IN THE FINDINGS). Additionally, visual aids such as charts, graphs, and tables will be utilized to ((blank)) (ADVICE: EMPHASIZE THE IMPORTANCE OF VISUAL REPRESENTATION FOR CLARITY AND EASE OF UNDERSTANDING). The findings reveal ((blank)) (ADVICE: PROVIDE A SUMMARY OF THE MAIN FINDINGS). Moreover, it is worth noting that our research has uncovered ((blank)) (ADVICE: DISCUSS ANY UNIQUE OR UNEXPECTED FINDINGS THAT CONTRIBUTE TO THE NOVELTY OF YOUR WORK). These findings align with the research objectives and contribute to the existing body of knowledge in the field of ((blank)) (ADVICE: SPECIFY THE RELEVANT FIELD). Furthermore, ((blank)) (ADVICE: DISCUSS THE IMPLICATIONS OR SIGNIFICANCE OF THE FINDINGS IN RELATION TO THE RESEARCH QUESTIONS OR OBJECTIVES). Overall, the findings of this study provide valuable insights and lay the foundation for further discussion and analysis in subsequent sections.
+
+\subsection{Data interpretation}
+
+Data interpretation plays a crucial role in extracting meaningful 
+insights from the collected data and understanding their 
+implications within the context of the research. ((blank)) (ADVICE: 
+INTRODUCE THE IMPORTANCE OF DATA INTERPRETATION). In this section, 
+we analyze and interpret the findings derived from the data analysis 
+process. The interpretation process involves a thorough examination 
+of the data to identify patterns, trends, and relationships. By 
+scrutinizing the data in depth, ((blank)) (ADVICE: DESCRIBE HOW DATA 
+INTERPRETATION HELPS TO UNCOVER MEANINGFUL INSIGHTS OR ANSWER THE 
+RESEARCH QUESTIONS). Additionally, we consider the theoretical 
+frameworks and existing literature to provide a comprehensive 
+understanding of the findings. The interpretation of the data 
+enables us to ((blank)) (ADVICE: HIGHLIGHT THE SIGNIFICANCE OR 
+IMPLICATIONS OF THE FINDINGS). Moreover, we examine any 
+discrepancies or outliers that may arise and provide plausible 
+explanations or potential factors contributing to these 
+observations. This process facilitates the identification of key 
+findings, underlying mechanisms, and potential areas for further 
+investigation. ((blank)) (ADVICE: EMPHASIZE THE NOVEL ASPECTS OF 
+YOUR INTERPRETATION THAT CONTRIBUTE TO THE OVERALL CONTRIBUTION OF 
+YOUR WORK). The interpreted findings provide valuable insights that 
+contribute to the existing knowledge base and address the research 
+objectives. By presenting a comprehensive and well-grounded 
+interpretation, this research contributes to the understanding of 
+((blank)) (ADVICE: SPECIFY THE PHENOMENON, FIELD, OR CONTEXT UNDER 
+STUDY) and offers practical implications for ((blank)) (ADVICE: 
+IDENTIFY THE RELEVANT STAKEHOLDERS OR APPLICATIONS).
+
+\subsection{Statistical analysis}
+
+Statistical analysis is a crucial component of this research, as it 
+provides a systematic approach to analyze and interpret the data 
+collected. ((blank)) (ADVICE: INTRODUCE THE IMPORTANCE OF 
+STATISTICAL ANALYSIS). In this section, we employ various 
+statistical techniques to explore the relationships, patterns, and 
+trends present in the data. The analysis begins with ((blank)) 
+(ADVICE: IDENTIFY THE INITIAL STEPS OR PRELIMINARY ANALYSES, SUCH AS 
+DESCRIPTIVE STATISTICS OR DATA CLEANING). Subsequently, we conduct 
+((blank)) (ADVICE: SPECIFY THE SPECIFIC STATISTICAL TESTS, MODELS, 
+OR PROCEDURES) to examine the associations and potential causality 
+between variables. These statistical analyses enable us to ((blank)) 
+(ADVICE: DESCRIBE HOW STATISTICAL ANALYSIS HELPS IN ANSWERING THE 
+RESEARCH QUESTIONS OR OBJECTIVES). Furthermore, we assess the 
+statistical significance of the findings and determine the strength 
+of the relationships observed. The results are reported using 
+appropriate statistical measures such as ((blank)) (ADVICE: MENTION 
+THE RELEVANT STATISTICAL MEASURES, E.G., P-VALUES, EFFECT SIZES). 
+Additionally, we explore potential confounding factors or 
+interactions that may influence the outcomes. It is important to 
+note that the statistical analysis conducted in this study is 
+innovative in ((blank)) (ADVICE: HIGHLIGHT THE UNIQUE ASPECTS OR 
+NOVEL APPLICATIONS OF YOUR STATISTICAL ANALYSIS). The statistical 
+findings provide valuable insights into ((blank)) (ADVICE: SPECIFY 
+THE PHENOMENON OR FIELD UNDER STUDY) and contribute to the overall 
+understanding of ((blank)) (ADVICE: STATE THE RELEVANT FIELD OR 
+KNOWLEDGE DOMAIN). By employing rigorous statistical analysis, we 
+ensure the reliability and validity of the research findings, 
+enhancing the robustness and impact of this study.
 
 \begin{frame}
   \frametitle{Results and Analysis}
@@ -1286,6 +1579,120 @@ func createReportTex(projectPath string) error {
     \item Statistical Analysis: Describes any statistical tests or analyses conducted on the data.
   \end{itemize}
 \end{frame}
+
+\section{Discussion}
+
+\subsection{Comparison with previous research}
+
+In this section, we compare our research findings with those of 
+previous studies to gain insights into the existing body of 
+knowledge and identify novel contributions. ((blank)) (ADVICE: 
+INTRODUCE THE IMPORTANCE OF COMPARISON WITH PREVIOUS RESEARCH). The 
+comparison involves examining the similarities and differences 
+between our findings and the results reported in prior literature. 
+Through this comparative analysis, we aim to ((blank)) (ADVICE: 
+STATE THE OBJECTIVES OF THE COMPARISON, SUCH AS VALIDATING OR 
+EXTENDING PREVIOUS FINDINGS). Notably, our research offers a unique 
+perspective by ((blank)) (ADVICE: HIGHLIGHT THE INNOVATIVE OR 
+DISTINCT ASPECTS OF YOUR WORK). The comparison reveals that 
+((blank)) (ADVICE: DESCRIBE THE KEY SIMILARITIES OR DIFFERENCES 
+OBSERVED). Furthermore, it is important to consider the contextual 
+factors that may account for any variations in findings. By 
+critically analyzing and interpreting the similarities and 
+discrepancies, we can provide a more comprehensive understanding of 
+((blank)) (ADVICE: SPECIFY THE PHENOMENON, TOPIC, OR FIELD UNDER 
+DISCUSSION). This comparative analysis not only helps us evaluate 
+the consistency and generalizability of our results but also 
+contributes to the advancement of knowledge in ((blank)) (ADVICE: 
+STATE THE RELEVANT FIELD). The integration of our findings with 
+existing research paves the way for further exploration and 
+highlights the unique contributions of our study to the field.
+
+\subsection{Implications and significance}
+
+The implications and significance of this research are multifaceted 
+and far-reaching, with important implications for both theory and 
+practice. ((blank)) (ADVICE: INTRODUCE THE IMPORTANCE OF DISCUSSING 
+IMPLICATIONS AND SIGNIFICANCE). Firstly, the findings of this study 
+contribute to the theoretical understanding of ((blank)) (ADVICE: 
+SPECIFY THE PHENOMENON OR FIELD UNDER STUDY) by ((blank)) (ADVICE: 
+HIGHLIGHT THE NOVEL CONCEPTS, MODELS, OR INSIGHTS THAT ADVANCE 
+THEORETICAL KNOWLEDGE). These findings challenge existing 
+assumptions and provide new perspectives that extend the current 
+body of knowledge. Secondly, this research has practical 
+implications for ((blank)) (ADVICE: IDENTIFY THE RELEVANT 
+STAKEHOLDERS, PRACTITIONERS, OR POLICYMAKERS). The insights gained 
+from this study can inform decision-making processes and guide the 
+development of effective strategies and interventions. ((blank)) 
+(ADVICE: DISCUSS THE SPECIFIC WAYS IN WHICH THE FINDINGS CAN BE 
+APPLIED OR ADD VALUE TO PRACTICE). Additionally, the innovative 
+approaches and methodologies utilized in this research offer 
+methodological contributions to the field of ((blank)) (ADVICE: 
+SPECIFY THE RELEVANT FIELD OR RESEARCH DOMAIN). Lastly, this study 
+opens up new avenues for future research by ((blank)) (ADVICE: 
+HIGHLIGHT THE UNEXPLORED AREAS OR QUESTIONS THAT EMERGE FROM THE 
+CURRENT RESEARCH). These future investigations can build upon our 
+findings and delve deeper into the complexities of ((blank)) 
+(ADVICE: STATE THE PHENOMENON OR TOPIC UNDER STUDY). In summary, the 
+implications and significance of this research lie in its ability to 
+advance theory, inform practice, contribute methodologically, and 
+guide future research, ultimately making a valuable and lasting 
+impact in the field of ((blank)) (ADVICE: SPECIFY THE RELEVANT FIELD 
+OR KNOWLEDGE DOMAIN).
+
+\subsection{Limitations and future research directions}
+
+It is important to acknowledge the limitations inherent in this 
+study, as they shape the scope and generalizability of the findings. 
+((blank)) (ADVICE: INTRODUCE THE DISCUSSION OF LIMITATIONS). One 
+limitation of this research is ((blank)) (ADVICE: IDENTIFY A 
+SPECIFIC LIMITATION, E.G., SAMPLING BIAS, SMALL SAMPLE SIZE). This 
+limitation may have influenced the representativeness of the sample 
+and the generalizability of the results. Additionally, ((blank)) 
+(ADVICE: MENTION ANOTHER LIMITATION, SUCH AS DATA COLLECTION 
+CONSTRAINTS OR RESOURCE LIMITATIONS). These limitations could have 
+impacted the comprehensiveness or accuracy of the data collected. 
+Furthermore, ((blank)) (ADVICE: DISCUSS ANOTHER RELEVANT LIMITATION, 
+E.G., POTENTIAL CONFOUNDING VARIABLES). The presence of confounding 
+variables may have introduced bias or affected the internal validity 
+of the study. It is also important to note that ((blank)) (ADVICE: 
+HIGHLIGHT ANY SPECIFIC ASSUMPTIONS MADE OR SIMPLIFICATIONS ADOPTED). 
+These assumptions or simplifications may have implications for the 
+generalizability or applicability of the findings in real-world 
+contexts. Despite these limitations, this research offers valuable 
+insights and serves as a foundation for future investigations. By 
+acknowledging these limitations, we foster transparency and ensure 
+that readers can accurately interpret the scope and implications of 
+our study.
+
+The findings and implications of this study provide a foundation for 
+future research in several promising directions. ((blank)) (ADVICE: 
+INTRODUCE THE IMPORTANCE OF FUTURE RESEARCH DIRECTIONS). Firstly, 
+further investigation is warranted to ((blank)) (ADVICE: STATE A 
+SPECIFIC AREA OR ASPECT THAT REQUIRES FURTHER EXPLORATION). This 
+includes delving deeper into ((blank)) (ADVICE: SPECIFY THE 
+PHENOMENON, TOPIC, OR CONTEXT UNDER STUDY) to gain a more 
+comprehensive understanding of its underlying mechanisms or 
+dynamics. Additionally, future research could benefit from ((blank)) 
+(ADVICE: IDENTIFY A METHOD OR APPROACH THAT COULD BE EMPLOYED TO 
+EXTEND THE CURRENT STUDY). For instance, employing longitudinal or 
+experimental designs may provide insights into causality or temporal 
+relationships. Furthermore, it would be valuable to ((blank)) 
+(ADVICE: SUGGEST AN AREA OR ASPECT THAT COULD BE EXPLORED FROM A 
+DIFFERENT PERSPECTIVE OR USING ALTERNATIVE METHODS). This could 
+involve interdisciplinary collaborations, exploring diverse 
+populations, or integrating novel theoretical frameworks. It is also 
+important to address the limitations identified in this study 
+through ((blank)) (ADVICE: RECOMMEND STRATEGIES TO OVERCOME THE 
+LIMITATIONS AND ENHANCE THE VALIDITY OR GENERALIZABILITY OF FUTURE 
+RESEARCH). By addressing these limitations, future research can 
+build upon the foundation laid by this study and expand our 
+knowledge in ((blank)) (ADVICE: SPECIFY THE RELEVANT FIELD OR 
+KNOWLEDGE DOMAIN). Overall, the findings of this study offer a 
+springboard for future investigations that have the potential to 
+advance theory, inform practice, and contribute to the existing body 
+of knowledge in the field of ((blank)) (ADVICE: SPECIFY THE RELEVANT 
+FIELD OR DOMAIN).
 
 \begin{frame}
   \frametitle{Discussion}
@@ -1299,6 +1706,31 @@ func createReportTex(projectPath string) error {
   \end{itemize}
 \end{frame}
 
+\section{Conclusion}
+
+In conclusion, it is evident that this research has made significant 
+contributions to the field of ((blank)). Through our rigorous 
+analysis and interpretation of the data, we have gained valuable 
+insights into ((blank)). The findings of this study have several 
+implications for both theory and practice. ((blank)) (ADVICE: 
+
+SPECIFY THE NOVEL ASPECTS OF YOUR WORK). These unique findings not 
+only enhance our understanding of ((blank)) but also provide a fresh 
+perspective on ((blank)). Furthermore, our research has identified 
+potential areas for future investigation. ((blank)) (ADVICE: STATE 
+THE RECOMMENDATIONS OR NEXT STEPS FOR FUTURE RESEARCH). By 
+addressing these research gaps, researchers can further deepen their 
+understanding of ((blank)). It is important to acknowledge the 
+limitations of this study, such as ((blank)). (ADVICE: DESCRIBE A 
+SPECIFIC LIMITATION). Nonetheless, these limitations provide 
+opportunities for future studies to build upon and overcome these 
+challenges. Overall, the findings of this research significantly 
+contribute to the field and provide a solid foundation for further 
+advancements in ((blank)).
+
+
+\subsection{Summary of findings}
+
 \begin{frame}
   \frametitle{Conclusion}
   \setcounter{footnote}{0}
@@ -1310,6 +1742,8 @@ func createReportTex(projectPath string) error {
   \end{itemize}
 \end{frame}
 
+\section*{References}
+
 \begin{frame}
   \frametitle{References}
   \setcounter{footnote}{0}
@@ -1319,6 +1753,8 @@ func createReportTex(projectPath string) error {
   \end{itemize}
 \end{frame}
 
+\section*{Appendices}
+
 \begin{frame}
   \frametitle{Appendix (if applicable)}
   \setcounter{footnote}{0}
@@ -1326,6 +1762,23 @@ func createReportTex(projectPath string) error {
   \begin{itemize}
     \item Includes any supplementary materials or additional information that supports the research.
   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Appendix (if applicable)}
+  \setcounter{footnote}{0}
+  \setcounter{equation}{0}
+
+  \begin{lstlisting}[language=Python]
+import math
+
+def calculate_circle_area(radius):
+  area = math.pi * radius**2
+  return area
+
+circle_radius = 3
+area = calculate_circle_area(circle_radius)
+print(f"The area of the circle is: {area}")\end{lstlisting}
 \end{frame}
 
 \end{document}
