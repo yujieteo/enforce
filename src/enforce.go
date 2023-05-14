@@ -1,3 +1,23 @@
+/*
+This is a Go program that performs various operations on a project directory. Here's an overview of what the code does:
+
+    It uses a dialog to allow the user to select a project directory.
+    It validates that the project path exists.
+    It creates several subdirectories within the project directory, such as "doc," "src," "job," "data," "ref," and "eg."
+    It creates an example directory within the "doc" directory and further creates subdirectories within it.
+    It creates a README file in the "eg" directory.
+    It creates a "data/large" directory.
+    It removes any empty subdirectories within the project directory.
+    It checks if a Git repository already exists in the project directory. If not, it initializes a new Git repository.
+    It creates additional subdirectories within the project directory.
+    It generates a README file.
+    It creates several subdirectories and files related to a LaTeX document.
+    It creates a .gitignore file.
+    It creates a Jupyter Notebook template.
+
+Overall, the code sets up a project directory structure, initializes a Git repository (if necessary), and performs various file and directory operations within the project directory.
+*/
+
 package main
 
 import (
@@ -165,6 +185,21 @@ func main() {
 	}
 }
 
+// sortFiles recursively sorts files in a given folder path.
+// It moves files to specific destination folders based on their file extensions.
+// The sorting rules are as follows:
+// - Files with extensions .pdf, .djvu, .epub, .html, .mkv, .mp4 are moved to the "ref" folder.
+// - Files with extensions .docx, .md, .tex, .txt, .doc, .pptx are moved to the "doc" folder.
+// - Files with extension .ipynb are moved to the "eg" folder.
+// - Files with extensions .py, .go, .inp, .c, .m, .for, .cpp, .java are moved to the "src" folder.
+// - All other files are moved to the "data" folder.
+//
+// Parameters:
+// - folderPath: The path of the folder to sort.
+//
+// Example:
+//
+//	sortFiles("/path/to/folder")
 func sortFiles(folderPath string) {
 
 	// Check if the current folder is the .git repository
@@ -236,6 +271,24 @@ func sortFiles(folderPath string) {
 	}
 }
 
+// getSubdirectories retrieves a list of subdirectories in a given folder path.
+//
+// Parameters:
+// - folderPath: The path of the folder to retrieve subdirectories from.
+//
+// Returns:
+// - A slice of subdirectory names.
+// - An error if any error occurs during the retrieval.
+//
+// Example:
+//
+//	subdirs, err := getSubdirectories("/path/to/folder")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
+//	for _, subdir := range subdirs {
+//	  fmt.Println(subdir)
+//	}
 func getSubdirectories(folderPath string) ([]string, error) {
 	var subdirectories []string
 
@@ -258,6 +311,14 @@ func getSubdirectories(folderPath string) ([]string, error) {
 	return subdirectories, nil
 }
 
+// removeEmptySubdirectories removes empty subdirectories in a given folder path.
+//
+// Parameters:
+// - folderPath: The path of the folder to remove empty subdirectories from.
+//
+// Example:
+//
+//	removeEmptySubdirectories("/path/to/folder")
 func removeEmptySubdirectories(folderPath string) {
 	subdirectories := make([]string, 0)
 
@@ -297,6 +358,26 @@ func removeEmptySubdirectories(folderPath string) {
 	}
 }
 
+// isDirectoryEmpty checks if a directory is empty.
+//
+// Parameters:
+// - path: The path of the directory to check.
+//
+// Returns:
+// - A boolean indicating whether the directory is empty.
+// - An error if any error occurs during the check.
+//
+// Example:
+//
+//	empty, err := isDirectoryEmpty("/path/to/directory")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
+//	if empty {
+//	  fmt.Println("Directory is empty")
+//	} else {
+//	  fmt.Println("Directory is not empty")
+//	}
 func isDirectoryEmpty(path string) (bool, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -323,6 +404,20 @@ func isDirectoryEmpty(path string) (bool, error) {
 	return false, err
 }
 
+// generateREADME generates a README.md file for the project at the specified path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the generation.
+//
+// Example:
+//
+//	err := generateREADME("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func generateREADME(projectPath string) error {
 	readmePath := projectPath + "/README.md"
 
@@ -486,6 +581,20 @@ func createColorThemeSty(projectPath string) error {
 	return nil
 }
 
+// createColorThemeDSty creates the "beamercolorthemelazyd.sty" file for the color theme in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createColorThemeDSty("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createColorThemeDSty(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamercolorthemelazyd.sty")
@@ -583,6 +692,20 @@ func createColorThemeDSty(projectPath string) error {
 	return nil
 }
 
+// createFontThemeSty creates the "beamerfontthemelazy.sty" file for the font theme in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createFontThemeSty("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createFontThemeSty(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerfontthemelazy.sty")
@@ -633,6 +756,20 @@ func createFontThemeSty(projectPath string) error {
 	return nil
 }
 
+// createOuterThemeSty creates the "beamerouterthemelazy.sty" file for the outer theme in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createOuterThemeSty("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createOuterThemeSty(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerouterthemelazy.sty")
@@ -736,6 +873,20 @@ head/foot}%
 	return nil
 }
 
+// createInnerThemeSty creates the "beamerinnerthemelazy.sty" file for the inner theme in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createInnerThemeSty("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createInnerThemeSty(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerinnerthemelazy.sty")
@@ -822,6 +973,20 @@ func createInnerThemeSty(projectPath string) error {
 	return nil
 }
 
+// createMainThemeSty creates the "beamerthemelazy.sty" file for the main theme in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createMainThemeSty("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createMainThemeSty(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerthemelazy.sty")
@@ -887,6 +1052,20 @@ func createMainThemeSty(projectPath string) error {
 	return nil
 }
 
+// createReportTex creates the "report.tex" file for the project report in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createReportTex("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createReportTex(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, "doc", "report", "report.tex")
@@ -1160,6 +1339,20 @@ func createReportTex(projectPath string) error {
 	return nil
 }
 
+// createGitignore creates the ".gitignore" file for the project in the specified project path.
+//
+// Parameters:
+// - projectPath: The path of the project.
+//
+// Returns:
+// - An error if any error occurs during the creation.
+//
+// Example:
+//
+//	err := createGitignore("/path/to/project")
+//	if err != nil {
+//	  log.Fatal(err)
+//	}
 func createGitignore(projectPath string) error {
 	// Create the file path using filepath.Join
 	filePath := filepath.Join(projectPath, ".gitignore")
@@ -1584,6 +1777,23 @@ docs/
 	return nil
 }
 
+// createJupyterTemplate creates a Jupyter Notebook template file in the specified project path.
+// The template includes sections for introduction, data preparation, exploratory data analysis (EDA),
+// results and conclusion, and references. Each section contains explanatory markdown cells and code cells
+// that can be filled in with relevant content.
+//
+// Parameters:
+//   - projectPath: The path to the project directory where the Jupyter Notebook template will be created.
+//
+// Returns:
+//   - An error if there was a problem creating the template file or directory.
+//
+// Example:
+//
+//	err := createJupyterTemplate("/path/to/project")
+//	if err != nil {
+//	  fmt.Printf("Error creating Jupyter Notebook template: %v", err)
+//	}
 func createJupyterTemplate(projectPath string) error {
 	// Create the file path using filepath.Join
 
