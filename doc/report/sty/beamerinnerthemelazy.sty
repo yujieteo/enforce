@@ -1,0 +1,62 @@
+
+%% Vertical text alignment:
+\DeclareOptionBeamer{c}{ \beamer@centeredtrue  }
+\DeclareOptionBeamer{t}{ \beamer@centeredfalse }
+
+%% Theorem numbers:
+\DeclareOptionBeamer{unnumbered}{ \def \MATHtheorem {}          }
+\DeclareOptionBeamer{numbered}  { \def \MATHtheorem {numbered}  }
+\DeclareOptionBeamer{AMS}       { \def \MATHtheorem {ams style} }
+
+\setbeamertemplate{title page}
+{
+    \AddToShipoutPictureFG*
+    {
+        \AtPageUpperLeft
+        {
+            \hspace{1.7 mm}
+            \parbox[t][2cm][b]{\textwidth}
+            {
+                %\includegraphics[scale = 0.125]
+                %{fig/logo.png}
+            }
+        }
+    }
+
+    \vbox to \textheight
+    {
+        \vspace{20 mm}
+
+        \leftskip  = 1.7 mm
+        \rightskip = 1.7 mm plus 2 cm
+
+        \usebeamerfont{title}    \structure{\inserttitle}
+        \\[0.1ex]
+        \usebeamerfont{subtitle} \structure{\insertsubtitle}
+
+        \vspace{5 mm}
+
+        \usebeamerfont{author} \insertauthor
+        \hfill
+        \newlength{\datewidth}
+        \settowidth{\datewidth}{\insertdate}
+        \parbox{\datewidth}
+        {
+            \usebeamerfont{date} \insertdate
+        }
+
+        \vspace{5 mm}
+        \usebeamerfont{institute} \insertinstitute
+        \hfill
+    }
+}
+
+\newcommand{\TitlePage}
+{
+    \begin{frame}[plain, noframenumbering]
+        \titlepage
+    \end{frame}
+}
+
+\setbeamertemplate{itemize items}[circle]
+	

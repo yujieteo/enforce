@@ -1,0 +1,77 @@
+
+\mode<presentation>
+
+% remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+\useoutertheme{tree}
+
+\makeatletter
+\setbeamertemplate{headline}
+{%
+    %\begin{beamercolorbox}[wd=\paperwidth,colsep=1.5pt]{upper separation line head}
+    %\end{beamercolorbox}
+    
+    %\begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=5ex,%
+    %  leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}
+    %  \usebeamerfont{title in head/foot}\insertshorttitle
+    %\end{beamercolorbox}
+
+    \setbeamertemplate{mini frames}[box]
+
+    \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=6ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{section in head/foot}
+      \insertnavigation{0.6\paperwidth}
+      \usebeamerfont{section in head/foot}%
+      \ifbeamer@tree@showhooks
+        \setbox\beamer@tempbox=\hbox{\insertsectionhead}%
+        \ifdim\wd\beamer@tempbox>1pt%
+          \hskip2pt\raise1.9pt\hbox{\vrule width0.4pt height1.875ex\vrule width 5pt height0.4pt}%
+          \hskip1pt%
+        \fi%
+      \else%  
+        \hskip6pt%
+      \fi%
+      \insertsectionhead
+      \usebeamerfont{subsection in head/foot}%
+      \ifbeamer@tree@showhooks
+        \setbox\beamer@tempbox=\hbox{\insertsubsectionhead}%
+        \ifdim\wd\beamer@tempbox>1pt%
+          \ \raise1.9pt\hbox{\vrule width 5pt height0.4pt}%
+          \hskip1pt%
+        \fi%
+      \else%  
+        \hskip12pt%
+      \fi%
+      \insertsubsectionhead
+      \hfill
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[wd=\paperwidth,colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=2ex,center]{author in head/foot}%
+    \usebeamerfont{author in
+head/foot}%
+  \insertshortauthor\hspace{1em}\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=2ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=2ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\mode<all>
+	

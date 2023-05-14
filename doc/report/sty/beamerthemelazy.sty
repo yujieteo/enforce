@@ -1,0 +1,39 @@
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+\RequirePackage{etoolbox}
+\RequirePackage{xcolor}
+\RequirePackage{calc}
+\RequirePackage{eso-pic}
+\RequirePackage{etoolbox}
+\RequirePackage[LGR, T1]{fontenc}
+\RequirePackage{thmtools}
+
+\usepackage{sty/beamerinnerthemelazy}
+\usepackage{sty/beamerouterthemelazy}
+\usepackage{sty/beamerfontthemelazy}
+
+\newif\if@dark
+\@darkfalse
+\DeclareOption{dark}{\@darktrue}
+\newif\if@accent
+\@accentfalse
+\DeclareOption{accent}{\@accenttrue}
+\ProcessOptions
+
+\if@dark
+\usepackage{sty/beamercolorthemelazyd}
+\else\if@accent
+\usepackage{sty/beamercolorthemelazy}
+\else
+\usepackage{sty/beamercolorthemelazy}
+\fi\fi
+
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=alinkblue,
+  linkcolor=alinkblue,
+}
+
+\mode<all>
+	

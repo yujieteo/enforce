@@ -1,0 +1,166 @@
+
+\documentclass[%
+  beameroptions={ignorenonframetext,11pt,169},
+  articleoptions={11pt},
+  also={trans,handout,article},
+  ]{beamerswitch}
+\handoutlayout{nup=3plus,border=1pt}
+\articlelayout{maketitle,frametitles=none}
+\usepackage[british]{babel}
+\mode<article>{
+    \usepackage[hmargin=3cm,vmargin=2.5cm]{geometry}
+    \usepackage{amsmath, amsthm, amssymb, amsfonts}
+    \usepackage[T1]{fontenc}
+    \usepackage{listings}
+    \usepackage{color} 
+    \usepackage{xcolor}  
+    \usepackage{hyperref}
+    \usepackage{tikz}
+    \usepackage{float}
+    \usepackage{courier}
+    \usepackage{imakeidx}
+    \usepackage{biblatex}
+    \usepackage{pgfgantt}
+    \addbibresource{ref.bib}
+    
+    \geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=20mm,
+    top=20mm,
+    }
+
+    \definecolor{linkblue}{HTML}{1A0DAB}
+
+    \newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+
+    \hypersetup{
+        colorlinks=true, 
+        linktoc=all,    
+        linkcolor=linkblue,  
+    }
+
+    \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+    \lstset{framextopmargin=50pt,frame=bottomline}
+
+    \definecolor{codegreen}{rgb}{0,0.6,0}
+    \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+    \definecolor{codepurple}{rgb}{0.58,0,0.82}
+    \definecolor{backcolour}{rgb}{0.97,0.97,0.95}
+
+    \lstdefinestyle{mystyle}{
+        backgroundcolor=\color{backcolour},   
+        commentstyle=\color{codegreen},
+        keywordstyle=\color{blue},
+        numberstyle=\tiny\color{codegray},
+        stringstyle=\color{codepurple},
+        basicstyle=\ttfamily\footnotesize,
+        breakatwhitespace=false,         
+        breaklines=true,                 
+        captionpos=b,                    
+        keepspaces=true,                 
+        numbers=left,                    
+        numbersep=5pt,                  
+        showspaces=false,                
+        showstringspaces=false,
+        showtabs=false,                  
+        tabsize=4
+    }
+
+    \usepackage{newtxtext}
+    \usepackage{newtxmath}
+    \usepackage{courier}
+}
+\mode<presentation>{
+    \usepackage[orientation=landscape,size=custom,width=16,height=9,scale=0.5,debug]{beamerposter} 
+    \usepackage{hyperref}
+    \usepackage{graphicx} % Allows including images
+    \usepackage{booktabs}
+    \usepackage[utf8]{inputenc} % 
+    \usepackage{biblatex}
+    \usepackage{pgfgantt}
+
+    \usepackage{csquotes}      
+    \usepackage{amsmath, amsthm, amssymb, amsfonts}        
+    \usepackage{mathtools}    
+    \usepackage[absolute, overlay]{textpos} 
+    \setlength{\TPHorizModule}{\paperwidth}
+    \setlength{\TPVertModule}{\paperheight}
+    \usepackage{tikz}
+    \usetikzlibrary{overlay-beamer-styles}
+    \usepackage{listings}
+    
+    \usepackage{sty/beamerthemelazy}
+
+    \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+    \lstset{framextopmargin=50pt,frame=bottomline}
+
+    \definecolor{codegreen}{rgb}{0,0.6,0}
+    \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+    \definecolor{codepurple}{rgb}{0.58,0,0.82}
+    \definecolor{backcolour}{rgb}{0.97,0.97,0.95}
+
+    \lstdefinestyle{mystyle}{
+        backgroundcolor=\color{backcolour},   
+        commentstyle=\color{codegreen},
+        keywordstyle=\color{blue},
+        numberstyle=\tiny\color{codegray},
+        stringstyle=\color{codepurple},
+        basicstyle=\ttfamily\footnotesize,
+        breakatwhitespace=false,         
+        breaklines=true,                 
+        captionpos=b,                    
+        keepspaces=true,                 
+        numbers=left,                    
+        numbersep=5pt,                  
+        showspaces=false,                
+        showstringspaces=false,
+        showtabs=false,                  
+        tabsize=4
+    }
+
+    % \addbibresource{ref.bib}
+}
+\mode<handout>{
+    \usecolortheme{dove}
+}
+
+% The title
+\title[\texttt{enforce}]{\texttt{enforce}}
+
+\author[Teo Yu Jie]{Teo Yu Jie}
+
+% Date, can be changed to a custom date
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\frame{\titlepage}
+
+\begin{frame}
+    \setcounter{footnote}{0}
+    \frametitle{Contents}
+    \tableofcontents
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{\texttt{Introduction}}
+    \setcounter{footnote}{0}
+    \setcounter{equation}{0}
+
+    \texttt{enforce} is a tool I wrote for myself to organise
+    most of my directories, what it does is the following:
+
+    \begin{enumerate}
+        \item \texttt{git init} the directory
+        \item sorts all the files based on the appropriate file type
+        \item builds a reasonable directory structure out of it.
+    \end{enumerate}
+\end{frame}
+
+\end{document}
