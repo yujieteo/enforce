@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -114,6 +115,14 @@ func main() {
 	if errJob != nil {
 		panic(err)
 	}
+
+	err = generateREADME(projectPath)
+	if err != nil {
+		fmt.Printf("Error generating README file: %v", err)
+		return
+	}
+
+	fmt.Println("README file generated successfully.")
 }
 
 func sortFiles(folderPath string) {
@@ -160,7 +169,7 @@ func sortFiles(folderPath string) {
 			destFolder = "doc"
 		case ".ipynb":
 			destFolder = filepath.Join("eg", strings.TrimSuffix(filepath.Base(path), extension))
-		case ".py", ".go", ".inp", ".c", ".m", ".for":
+		case ".py", ".go", ".inp", ".c", ".m", ".for", ".cpp", ".java":
 			destFolder = filepath.Join("src", strings.TrimSuffix(filepath.Base(path), extension))
 		default:
 			destFolder = "data"
@@ -272,4 +281,63 @@ func isDirectoryEmpty(path string) (bool, error) {
 	}
 
 	return false, err
+}
+
+func generateREADME(projectPath string) error {
+	readmePath := projectPath + "/README.md"
+	readmeContent := []byte(`# Project Name
+
+One Paragraph of project description goes here
+
+## Table of Contents
+
+- [Project Name](#project-name)
+  - [Table of Contents](#table-of-contents)
+  - [About](#about)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
+
+## About
+
+Provide a brief introduction or overview of your project.
+
+## Getting Started
+
+Instructions on setting up and running the project.
+
+### Prerequisites
+
+List any software, libraries, or dependencies that need to be installed before running the project.
+
+### Installation
+
+Step-by-step instructions on how to install the project.
+
+## Usage
+
+Provide examples or instructions on how to use the project.
+
+## Contributing
+
+Explain how others can contribute to your project. Include guidelines for pull requests and code style.
+
+## License
+
+Mention the license under which the project is distributed (e.g., MIT License).
+
+## Acknowledgements
+
+Give credits to any external resources or individuals whose work has influenced your project.`)
+
+	err := ioutil.WriteFile(readmePath, readmeContent, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write README file: %v", err)
+	}
+
+	return nil
 }
