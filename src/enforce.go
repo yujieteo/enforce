@@ -49,7 +49,20 @@ func main() {
 		return
 	}
 
-	components := []string{"doc", "src", "job", "data", "ref", "eg"}
+	gitPath := filepath.Join(projectPath, ".git")
+
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		err = extractFilesToPath(projectPath)
+		if err != nil {
+			fmt.Printf("Error moving files: %v\n", err)
+		} else {
+			fmt.Println("Files moved successfully!")
+		}
+	} else {
+		fmt.Println("Git repository already exists. Files will moved.")
+	}
+
+	components := []string{"doc", "src", "job", "data", "ref", "media", "bin"}
 
 	for _, component := range components {
 		componentPath := filepath.Join(projectPath, component)
@@ -75,25 +88,6 @@ func main() {
 		}
 	}
 
-	exampleReadmeFilePath := filepath.Join(projectPath, "eg", "README.md")
-	err = os.WriteFile(exampleReadmeFilePath, []byte(`# List of Examples
-	## Example 1
-	## Example 2
-	## Example 3
-	`), 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	// Create the large data directory
-	dataLargeDir := filepath.Join(projectPath, "data", "large")
-	err = os.MkdirAll(dataLargeDir, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-
-	removeEmptySubdirectories(projectPath)
-
 	for _, component := range components {
 		componentPath := filepath.Join(projectPath, component)
 		removeEmptySubdirectories(projectPath)
@@ -103,17 +97,36 @@ func main() {
 		}
 	}
 
-	errJob := os.MkdirAll(filepath.Join(projectPath, "job"), os.ModePerm)
-	if errJob != nil {
-		panic(err)
+	err = createJupyterTemplate(projectPath)
+	if err != nil {
+		fmt.Println(err)
 	}
+
+	// Check if Git repository already exists
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		// Initialize Git repository
+		removeEmptySubdirectories(projectPath)
+		sortFiles(projectPath)
+
+		cmd := exec.Command("git", "-C", projectPath, "init")
+		err = cmd.Run()
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Git repository initialized.")
+	} else {
+		removeEmptySubdirectories(projectPath)
+		fmt.Println("Git repository already exists. Files will not be sorted.")
+	}
+
+	removeEmptySubdirectories(projectPath)
 
 	err = generateREADME(projectPath)
 	if err != nil {
 		fmt.Printf("Error generating README file: %v", err)
 	}
 
-	// Create the large data directory
 	egStyDir := filepath.Join(projectPath, "doc", "report", "sty")
 	err = os.MkdirAll(egStyDir, os.ModePerm)
 	if err != nil {
@@ -160,28 +173,12 @@ func main() {
 		fmt.Println(err)
 	}
 
-	err = createJupyterTemplate(projectPath)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Check if Git repository already exists
-	gitPath := filepath.Join(projectPath, ".git")
-	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
-		// Initialize Git repository
-		removeEmptySubdirectories(projectPath)
-		sortFiles(projectPath)
-
-		cmd := exec.Command("git", "-C", projectPath, "init")
-		err = cmd.Run()
+	for _, component := range components {
+		componentPath := filepath.Join(projectPath, component)
+		err := os.MkdirAll(componentPath, os.ModePerm)
 		if err != nil {
 			panic(err)
 		}
-
-		fmt.Println("Git repository initialized.")
-	} else {
-		removeEmptySubdirectories(projectPath)
-		fmt.Println("Git repository already exists. Files will not be sorted.")
 	}
 
 	removeEmptySubdirectories(projectPath)
@@ -202,6 +199,29 @@ func main() {
 // Example:
 //
 // sortFiles("/path/to/folder")
+
+func extractFilesToPath(rootPath string) error {
+	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			// Move the file to the rootPath directory
+			destinationPath := filepath.Join(rootPath, info.Name())
+			err = os.Rename(path, destinationPath)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Moved file: %s\n", destinationPath)
+		}
+
+		return nil
+	})
+
+	return err
+}
 
 func sortFiles(folderPath string) {
 
@@ -241,16 +261,16 @@ func sortFiles(folderPath string) {
 		destFolder := ""
 
 		switch extension {
-		case ".pdf", ".djvu", ".epub", ".html", ".mkv", ".mp4", ".aac", ".flac", ".wav", ".avi":
-			destFolder = filepath.Join("ref", strings.TrimSuffix(filepath.Base(path), extension))
-		case ".rst", ".rth", ".cdb", ".ls-dyna", ".db", ".dbb", ".esav":
+		case ".pdf", ".djvu", ".epub", ".html", ".docx", ".md", ".tex", ".txt", ".doc", ".pptx", ".ipynb":
+			destFolder = filepath.Join("doc", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".rst", ".rth", ".cdb", ".ls-dyna", ".db", ".dbb", ".esav", ".out":
 			destFolder = "job"
-		case ".docx", ".md", ".tex", ".txt", ".doc", ".pptx":
-			destFolder = "doc"
-		case ".ipynb":
-			destFolder = filepath.Join("eg", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".mkv", ".mp4", ".aac", ".flac", ".wav", ".avi", ".png", ".jpeg", ".mov", ".wmv", ".jpg", ".mp3":
+			destFolder = filepath.Join("media", strings.TrimSuffix(filepath.Base(path), extension))
 		case ".py", ".go", ".ans", ".inp", ".c", ".m", ".for", ".cpp", ".java", ".scala", ".php", ".sh", ".asm", ".h", ".dat":
 			destFolder = filepath.Join("src", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".exe":
+			destFolder = "bin"
 		default:
 			destFolder = "data"
 		}
@@ -2264,13 +2284,13 @@ docs/
 func createJupyterTemplate(projectPath string) error {
 	// Create the file path using filepath.Join
 
-	egStyDir := filepath.Join(projectPath, "eg", "notebook")
+	egStyDir := filepath.Join(projectPath, "doc", "notebook")
 	err := os.MkdirAll(egStyDir, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
 
-	filePath := filepath.Join(projectPath, "eg", "notebook", "notebook.ipynb")
+	filePath := filepath.Join(projectPath, "doc", "notebook", "notebook.ipynb")
 
 	// Check if the file already exists
 	if _, err := os.Stat(filePath); err == nil {
