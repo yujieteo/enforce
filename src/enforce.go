@@ -184,6 +184,7 @@ func main() {
 		fmt.Println("Git repository already exists. Files will not be sorted.")
 	}
 
+	removeEmptySubdirectories(projectPath)
 }
 
 // sortFiles recursively sorts files in a given folder path.
@@ -200,7 +201,8 @@ func main() {
 //
 // Example:
 //
-//	sortFiles("/path/to/folder")
+// sortFiles("/path/to/folder")
+
 func sortFiles(folderPath string) {
 
 	// Check if the current folder is the .git repository
@@ -239,13 +241,15 @@ func sortFiles(folderPath string) {
 		destFolder := ""
 
 		switch extension {
-		case ".pdf", ".djvu", ".epub", ".html", ".mkv", ".mp4":
+		case ".pdf", ".djvu", ".epub", ".html", ".mkv", ".mp4", ".aac", ".flac", ".wav", ".avi":
 			destFolder = filepath.Join("ref", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".rst", ".rth", ".cdb", ".ls-dyna", ".db", ".dbb", ".esav":
+			destFolder = "job"
 		case ".docx", ".md", ".tex", ".txt", ".doc", ".pptx":
 			destFolder = "doc"
 		case ".ipynb":
 			destFolder = filepath.Join("eg", strings.TrimSuffix(filepath.Base(path), extension))
-		case ".py", ".go", ".inp", ".c", ".m", ".for", ".cpp", ".java", ".scala", ".php", ".sh", ".asm", ".h", ".dat":
+		case ".py", ".go", ".ans", ".inp", ".c", ".m", ".for", ".cpp", ".java", ".scala", ".php", ".sh", ".asm", ".h", ".dat":
 			destFolder = filepath.Join("src", strings.TrimSuffix(filepath.Base(path), extension))
 		default:
 			destFolder = "data"
