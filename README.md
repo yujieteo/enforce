@@ -8,6 +8,7 @@ Enforces a project directory structure on an existing folder.
   - [Table of Contents](#table-of-contents)
   - [About](#about)
   - [Getting Started](#getting-started)
+  - [Bugs](#bugs)
 
 ## About
 
@@ -28,3 +29,6 @@ This can be done with LaTeX.
 
 Run the executable provided for 64-bit Windows. Or create builds
 for other operating systems using ```go build````
+
+## Bugs
+Unable to work with filenames with space in front of . in extension. Example: abc .pdf
