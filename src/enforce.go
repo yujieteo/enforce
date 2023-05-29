@@ -108,8 +108,6 @@ func main() {
 		panic(err)
 	}
 
-	sortFiles(projectPath)
-
 	err = generateREADME(projectPath)
 	if err != nil {
 		fmt.Printf("Error generating README file: %v", err)
@@ -172,16 +170,18 @@ func main() {
 	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
 		// Initialize Git repository
 		removeEmptySubdirectories(projectPath)
+		sortFiles(projectPath)
 
 		cmd := exec.Command("git", "-C", projectPath, "init")
 		err = cmd.Run()
 		if err != nil {
 			panic(err)
 		}
+
 		fmt.Println("Git repository initialized.")
 	} else {
 		removeEmptySubdirectories(projectPath)
-		fmt.Println("Git repository already exists.")
+		fmt.Println("Git repository already exists. Files will not be sorted.")
 	}
 
 }
