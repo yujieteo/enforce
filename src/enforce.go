@@ -108,6 +108,8 @@ func main() {
 		panic(err)
 	}
 
+	sortFiles(projectPath)
+
 	err = generateREADME(projectPath)
 	if err != nil {
 		fmt.Printf("Error generating README file: %v", err)
@@ -170,8 +172,6 @@ func main() {
 	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
 		// Initialize Git repository
 		removeEmptySubdirectories(projectPath)
-
-		sortFiles(projectPath)
 
 		cmd := exec.Command("git", "-C", projectPath, "init")
 		err = cmd.Run()
@@ -245,7 +245,7 @@ func sortFiles(folderPath string) {
 			destFolder = "doc"
 		case ".ipynb":
 			destFolder = filepath.Join("eg", strings.TrimSuffix(filepath.Base(path), extension))
-		case ".py", ".go", ".inp", ".c", ".m", ".for", ".cpp", ".java":
+		case ".py", ".go", ".inp", ".c", ".m", ".for", ".cpp", ".java", ".scala", ".php", ".sh", ".asm", ".h", ".dat":
 			destFolder = filepath.Join("src", strings.TrimSuffix(filepath.Base(path), extension))
 		default:
 			destFolder = "data"
