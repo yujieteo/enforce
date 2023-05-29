@@ -94,25 +94,6 @@ func main() {
 
 	removeEmptySubdirectories(projectPath)
 
-	// Check if Git repository already exists
-	gitPath := filepath.Join(projectPath, ".git")
-	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
-		// Initialize Git repository
-		removeEmptySubdirectories(projectPath)
-
-		sortFiles(projectPath)
-
-		cmd := exec.Command("git", "-C", projectPath, "init")
-		err = cmd.Run()
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println("Git repository initialized.")
-	} else {
-		removeEmptySubdirectories(projectPath)
-		fmt.Println("Git repository already exists.")
-	}
-
 	for _, component := range components {
 		componentPath := filepath.Join(projectPath, component)
 		removeEmptySubdirectories(projectPath)
@@ -183,6 +164,26 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	// Check if Git repository already exists
+	gitPath := filepath.Join(projectPath, ".git")
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		// Initialize Git repository
+		removeEmptySubdirectories(projectPath)
+
+		sortFiles(projectPath)
+
+		cmd := exec.Command("git", "-C", projectPath, "init")
+		err = cmd.Run()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Git repository initialized.")
+	} else {
+		removeEmptySubdirectories(projectPath)
+		fmt.Println("Git repository already exists.")
+	}
+
 }
 
 // sortFiles recursively sorts files in a given folder path.
