@@ -17,15 +17,13 @@ assortment of files.
 
 ## About
 
-
-
 An additional Jupyter notebook
-and ```beamerswitch``` report
+and `beamerswitch` report
 in my own style is created.
 
-The ```beamerswitch``` report
+The `beamerswitch` report
 is a LaTeX source that generates
-a presentation as well as a 
+a presentation as well as a
 written report at the same time.
 This can be done with LaTeX.
 
