@@ -29,6 +29,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/sqweek/dialog"
@@ -57,6 +58,31 @@ func main() {
 			fmt.Printf("Error moving files: %v\n", err)
 		} else {
 			fmt.Println("Files moved successfully!")
+		}
+
+		fileInfos, err := ioutil.ReadDir(projectPath)
+		if err != nil {
+			fmt.Println("Error reading directory:", err)
+			return
+		}
+
+		for _, fileInfo := range fileInfos {
+			if fileInfo.IsDir() {
+				continue // Skip directories
+			}
+
+			oldFilePath := filepath.Join(projectPath, fileInfo.Name())
+			newFileName := transformFileName(fileInfo.Name())
+			newFilePath := filepath.Join(projectPath, newFileName)
+
+			if oldFilePath != newFilePath {
+				err := os.Rename(oldFilePath, newFilePath)
+				if err != nil {
+					fmt.Printf("Error renaming file '%s': %v\n", oldFilePath, err)
+				} else {
+					fmt.Printf("Renamed file '%s' to '%s'\n", oldFilePath, newFilePath)
+				}
+			}
 		}
 	} else {
 		fmt.Println("Git repository already exists. Files will moved.")
@@ -107,20 +133,12 @@ func main() {
 		// Initialize Git repository
 		removeEmptySubdirectories(projectPath)
 		sortFiles(projectPath)
-
-		cmd := exec.Command("git", "-C", projectPath, "init")
-		err = cmd.Run()
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Println("Git repository initialized.")
+		removeEmptySubdirectories(projectPath)
+		fmt.Println("Files are sorted.")
 	} else {
 		removeEmptySubdirectories(projectPath)
 		fmt.Println("Git repository already exists. Files will not be sorted.")
 	}
-
-	removeEmptySubdirectories(projectPath)
 
 	err = generateREADME(projectPath)
 	if err != nil {
@@ -182,6 +200,32 @@ func main() {
 	}
 
 	removeEmptySubdirectories(projectPath)
+
+	// Check if Git repository already exists
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		// Initialize Git repository
+		cmd := exec.Command("git", "-C", projectPath, "init")
+		err = cmd.Run()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Git repository initialized.")
+	} else {
+		fmt.Println("Git repository already exists. Files will not be sorted.")
+	}
+}
+
+func transformFileName(fileName string) string {
+	// Replace whitespace and dashes with underscores
+	fileName = regexp.MustCompile(`[\s-]`).ReplaceAllString(fileName, "_")
+
+	// Convert to lowercase
+	fileName = strings.ToLower(fileName)
+
+	// Replace repeated underscores with a single underscore
+	fileName = regexp.MustCompile(`_+`).ReplaceAllString(fileName, "_")
+
+	return fileName
 }
 
 // sortFiles recursively sorts files in a given folder path.
