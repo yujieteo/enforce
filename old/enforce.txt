@@ -1,0 +1,646 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"regexp"
+	"strings"
+
+	"github.com/sqweek/dialog"
+)
+
+func main() {
+	projectPath, err := dialog.Directory().Title("Select project directory").Browse()
+	if err != nil {
+		fmt.Println("Failed to select project directory:", err)
+		return
+	}
+
+	// Validate the project path exists
+	_, err = os.Stat(projectPath)
+	if os.IsNotExist(err) {
+		fmt.Println("Project path does not exist.")
+		return
+	}
+
+	gitPath := filepath.Join(projectPath, ".git")
+
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		err = extractFilesToPath(projectPath)
+		if err != nil {
+			fmt.Printf("Error moving files: %v\n", err)
+		} else {
+			fmt.Println("Files moved successfully!")
+		}
+
+		fileInfos, err := ioutil.ReadDir(projectPath)
+		if err != nil {
+			fmt.Println("Error reading directory:", err)
+			return
+		}
+
+		for _, fileInfo := range fileInfos {
+			if fileInfo.IsDir() {
+				continue // Skip directories
+			}
+
+			oldFilePath := filepath.Join(projectPath, fileInfo.Name())
+			newFileName := transformFileName(fileInfo.Name())
+			newFilePath := filepath.Join(projectPath, newFileName)
+
+			if oldFilePath != newFilePath {
+				err := os.Rename(oldFilePath, newFilePath)
+				if err != nil {
+					fmt.Printf("Error renaming file '%s': %v\n", oldFilePath, err)
+				} else {
+					fmt.Printf("Renamed file '%s' to '%s'\n", oldFilePath, newFilePath)
+				}
+			}
+		}
+	} else {
+		fmt.Println("Git repository already exists. Files will moved.")
+	}
+
+	components := []string{"doc", "src", "job", "data", "ref", "media", "bin"}
+
+	for _, component := range components {
+		componentPath := filepath.Join(projectPath, component)
+		err := os.MkdirAll(componentPath, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Create an example
+	exampleName := "report"
+	exampleDir := filepath.Join(projectPath, "doc", exampleName)
+	err = os.MkdirAll(exampleDir, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, component := range components {
+		componentPath := filepath.Join(exampleDir, component)
+		err := os.MkdirAll(componentPath, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	for _, component := range components {
+		componentPath := filepath.Join(projectPath, component)
+		removeEmptySubdirectories(projectPath)
+		err := os.MkdirAll(componentPath, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	err = createJupyterTemplate(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Check if Git repository already exists
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		// Initialize Git repository
+		removeEmptySubdirectories(projectPath)
+		sortFiles(projectPath)
+		removeEmptySubdirectories(projectPath)
+		fmt.Println("Files are sorted.")
+	} else {
+		removeEmptySubdirectories(projectPath)
+		fmt.Println("Git repository already exists. Files will not be sorted.")
+	}
+
+	err = generateREADME(projectPath)
+	if err != nil {
+		fmt.Printf("Error generating README file: %v", err)
+	}
+
+	egStyDir := filepath.Join(projectPath, "doc", "report", "sty")
+	err = os.MkdirAll(egStyDir, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	err = createColorThemeDSty(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createColorThemeSty(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createFontThemeSty(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createOuterThemeSty(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createInnerThemeSty(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createMainThemeSty(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createReportTex(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = createGitignore(projectPath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, component := range components {
+		componentPath := filepath.Join(projectPath, component)
+		err := os.MkdirAll(componentPath, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	removeEmptySubdirectories(projectPath)
+
+	// Check if Git repository already exists
+	if _, err := os.Stat(gitPath); os.IsNotExist(err) {
+		// Initialize Git repository
+		cmd := exec.Command("git", "-C", projectPath, "init")
+		err = cmd.Run()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Git repository initialized.")
+	} else {
+		fmt.Println("Git repository already exists. Files will not be sorted.")
+	}
+}
+
+func transformFileName(fileName string) string {
+	fileName = regexp.MustCompile(`[\s-]`).ReplaceAllString(fileName, "_")
+	fileName = strings.ToLower(fileName)
+	fileName = regexp.MustCompile(`_+`).ReplaceAllString(fileName, "_")
+	return fileName
+}
+
+func extractFilesToPath(rootPath string) error {
+	err := filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			// Move the file to the rootPath directory
+			destinationPath := filepath.Join(rootPath, info.Name())
+			err = os.Rename(path, destinationPath)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("Moved file: %s\n", destinationPath)
+		}
+
+		return nil
+	})
+
+	return err
+}
+
+func sortFiles(folderPath string) {
+	if filepath.Base(folderPath) == ".git" {
+		fmt.Printf("Skipping .git repository: '%s'\n", folderPath)
+		return
+	}
+
+	subdirectories, err := getSubdirectories(folderPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, subdir := range subdirectories {
+		subdirPath := filepath.Join(folderPath, subdir)
+
+		// Check if the current subdirectory is the .git directory
+		if subdir == ".git" {
+			fmt.Printf("Skipping .git repository: '%s'\n", subdirPath)
+			continue
+		}
+
+		sortFiles(subdirPath)
+	}
+
+	err = filepath.Walk(folderPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		extension := strings.ToLower(filepath.Ext(path))
+		destFolder := ""
+
+		switch extension {
+		case ".pdf", ".djvu", ".epub", ".html", ".docx", ".md", ".tex", ".txt", ".doc", ".pptx", ".ipynb":
+			destFolder = filepath.Join("doc", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".rst", ".rth", ".cdb", ".ls-dyna", ".db", ".dbb", ".esav", ".out":
+			destFolder = "job"
+		case ".mkv", ".mp4", ".aac", ".flac", ".wav", ".avi", ".png", ".jpeg", ".mov", ".wmv", ".jpg", ".mp3":
+			destFolder = filepath.Join("media", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".py", ".go", ".ans", ".inp", ".c", ".m", ".for", ".cpp", ".java", ".scala", ".php", ".sh", ".asm", ".h", ".dat":
+			destFolder = filepath.Join("src", strings.TrimSuffix(filepath.Base(path), extension))
+		case ".exe":
+			destFolder = "bin"
+		default:
+			destFolder = "data"
+		}
+
+		destFolderPath := filepath.Join(folderPath, destFolder)
+		err = os.MkdirAll(destFolderPath, 0755)
+		if err != nil {
+			return err
+		}
+
+		destFilePath := filepath.Join(destFolderPath, filepath.Base(path))
+		err = os.Rename(path, destFilePath)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("Moved '%s' to '%s'\n", path, destFilePath)
+		return nil
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+func getSubdirectories(folderPath string) ([]string, error) {
+	var subdirectories []string
+
+	err := filepath.Walk(folderPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() && path != folderPath {
+			subdirectories = append(subdirectories, strings.TrimPrefix(path, folderPath+string(os.PathSeparator)))
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	return subdirectories, nil
+}
+func removeEmptySubdirectories(folderPath string) {
+	subdirectories := make([]string, 0)
+
+	err := filepath.Walk(folderPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() && path != folderPath {
+			subdirectories = append(subdirectories, path)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Remove empty subdirectories in reverse order
+	for i := len(subdirectories) - 1; i >= 0; i-- {
+		dir := subdirectories[i]
+		isEmpty, err := isDirectoryEmpty(dir)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		if isEmpty {
+			err := os.Remove(dir)
+			if err != nil {
+				log.Println(err)
+			} else {
+				fmt.Printf("Removed empty directory: %s\n", dir)
+			}
+		}
+	}
+}
+func isDirectoryEmpty(path string) (bool, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+
+	_, err = f.Readdirnames(1)
+	if err == nil {
+		// Directory is not empty
+		return false, nil
+	}
+
+	if errors.Is(err, os.ErrNotExist) {
+		// Directory does not exist
+		return false, nil
+	}
+
+	if errors.Is(err, io.EOF) {
+		// Directory is empty
+		return true, nil
+	}
+
+	return false, err
+}
+func generateREADME(projectPath string) error {
+	readmePath := projectPath + "/README.md"
+	if _, err := os.Stat(readmePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+	readmeContent := []byte(`...`)
+	err := ioutil.WriteFile(readmePath, readmeContent, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write README file: %v", err)
+	}
+	return nil
+}
+
+func createColorThemeSty(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamercolorthemelazy.sty")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+	`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createColorThemeDSty(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamercolorthemelazyd.sty")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+	`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createFontThemeSty(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerfontthemelazy.sty")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+	`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+
+func createOuterThemeSty(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerouterthemelazy.sty")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+	`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createInnerThemeSty(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerinnerthemelazy.sty")
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `...`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createMainThemeSty(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "sty", "beamerthemelazy.sty")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `...
+	`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createReportTex(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, "doc", "report", "report.tex")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createGitignore(projectPath string) error {
+	// Create the file path using filepath.Join
+	filePath := filepath.Join(projectPath, ".gitignore")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
+func createJupyterTemplate(projectPath string) error {
+	// Create the file path using filepath.Join
+
+	egStyDir := filepath.Join(projectPath, "doc", "notebook")
+	err := os.MkdirAll(egStyDir, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	filePath := filepath.Join(projectPath, "doc", "notebook", "notebook.ipynb")
+
+	// Check if the file already exists
+	if _, err := os.Stat(filePath); err == nil {
+		return fmt.Errorf("file already exists")
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write content to the file
+	content := `
+...
+`
+	_, err = file.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %w", err)
+	}
+
+	fmt.Println("File created successfully.")
+	return nil
+}
