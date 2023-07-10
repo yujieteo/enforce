@@ -1,5 +1,9 @@
 package main
 
+import (
+	"os"
+)
+
 // Directory represents a directory in the file system.
 type Directory struct {
 	path       string
@@ -46,4 +50,32 @@ func (r *RecursiveDirectory) ExecuteOperations() error {
 		}
 	}
 	return nil
+}
+
+// Helper function to check if a directory is empty
+func isDirectoryEmpty(dirPath string) (bool, error) {
+	f, err := os.Open(dirPath)
+	if err != nil {
+		return false, err
+	}
+	defer f.Close()
+
+	_, err = f.Readdirnames(1)
+	if err == nil {
+		// Directory is not empty
+		return false, nil
+	}
+
+	if err == os.ErrNotExist {
+		// Directory doesn't exist
+		return false, err
+	}
+
+	if err == os.ErrPermission {
+		// Permission denied
+		return false, err
+	}
+
+	// Directory is empty
+	return true, nil
 }

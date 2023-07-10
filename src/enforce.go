@@ -24,6 +24,75 @@ func main() {
 		return
 	}
 
+	// Move files out of the selected directory into the main directory
+	err = filepath.Walk(projectPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			destPath := filepath.Join(projectPath, info.Name())
+			moveOp := &MoveFileOperation{sourcePath: path, destPath: destPath}
+			if err := moveOp.Execute(); err != nil {
+				fmt.Println(err)
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Remove empty directories
+	err = filepath.Walk(projectPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			isEmpty, err := isDirectoryEmpty(path)
+			if err != nil {
+				fmt.Println(err)
+				return nil
+			}
+
+			if isEmpty {
+				removeOp := &RemoveDirectoryOperation{dirPath: path}
+				if err := removeOp.Execute(); err != nil {
+					fmt.Println(err)
+				}
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Rename files in the main directory
+	err = filepath.Walk(projectPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			renameOp := &RenameFileOperation{filePath: path}
+			if err := renameOp.Execute(); err != nil {
+				fmt.Println(err)
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	// Create a directory structure
 	projectDir := &RecursiveDirectory{Directory: &Directory{path: projectPath}}
 	projectDir.AddOperation(&CreateDirectoryOperation{dirPath: filepath.Join(projectPath, "doc")})
@@ -65,15 +134,6 @@ func main() {
 		projectDir.AddOperation(sorter)
 	}
 
-	// Create a .gitignore file
-	textFileFactory := &TextFileFactory{
-		ProjectPath: projectPath,
-	}
-	err = textFileFactory.CreateGitignore()
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	// Execute all file operations
 	err = projectDir.ExecuteOperations()
 	if err != nil {
@@ -92,6 +152,15 @@ func main() {
 		fmt.Println("Git repository initialized.")
 	} else {
 		fmt.Println("Git repository already exists. Files will not be sorted.")
+	}
+
+	// Create a .gitignore file
+	textFileFactory := &TextFileFactory{
+		ProjectPath: projectPath,
+	}
+	err = textFileFactory.CreateGitignore()
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	fmt.Println("Program completed successfully.")
